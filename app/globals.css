@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F5F5F5;
+  --foreground: #333333;
 }
 
 @theme inline {
@@ -12,15 +12,28 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Color transition animation between brand colors */
+@keyframes colorTransition {
+  0% {
+    background-color: #1c4064; /* Deep navy blue */
+  }
+  50% {
+    background-color: #006d65; /* Vibrant teal */
+  }
+  100% {
+    background-color: #1c4064; /* Smooth fade back to deep navy blue */
+  }
+}
+
+/* Custom footer gradient with exact 10-90 ratio */
+.footer-gradient {
+  background: linear-gradient(135deg, #007A7A 10%, #1c4064 90%);
 }
