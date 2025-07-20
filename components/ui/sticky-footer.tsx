@@ -3,7 +3,7 @@ import ComesInGoesOutUnderline from "./underline-comes-in-goes-out";
 
 const StickyFooter: React.FC = () => {
   return (
-    <div className="relative w-full h-80 footer-gradient flex justify-center items-center">
+    <footer className="sticky bottom-0 w-full h-80 footer-gradient flex justify-center items-center z-0">
       <div className="relative overflow-hidden w-full h-full flex justify-end px-12 text-right items-start py-12 text-white shadow-2xl">
         <div className="flex flex-row space-x-12 sm:space-x-16 md:space-x-24 text-sm sm:text-lg md:text-xl">
           <ul className="space-y-2">
@@ -38,7 +38,7 @@ const StickyFooter: React.FC = () => {
           Made with ❤️ in California
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

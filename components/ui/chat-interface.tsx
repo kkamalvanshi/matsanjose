@@ -131,11 +131,11 @@ export const ChatInterface = ({
 
   return (
     <div className={cn(
-      "flex flex-col h-[600px] max-w-2xl mx-auto bg-white dark:bg-neutral-900 rounded-2xl shadow-xl border border-gray-200 dark:border-neutral-700 overflow-hidden",
+      "flex flex-col h-[600px] max-w-2xl mx-auto bg-[#F5F5F5] rounded-2xl shadow-xl overflow-hidden mb-8",
       className
     )}>
       {/* Chat Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4">
+      <div className="bg-gradient-to-r from-[#007A7A] to-[#1c4064] text-white p-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +144,7 @@ export const ChatInterface = ({
           </div>
           <div>
             <h3 className="font-semibold">MAT San Jose Assistant</h3>
-            <p className="text-sm text-blue-100">
+            <p className="text-sm text-white/80">
               {isTyping ? "Typing..." : "Online • Ready to help"}
             </p>
           </div>
@@ -152,7 +152,7 @@ export const ChatInterface = ({
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#F5F5F5]">
         <AnimatePresence>
           {messages.map((message) => (
             <motion.div
@@ -166,17 +166,17 @@ export const ChatInterface = ({
               )}
             >
               <div className={cn(
-                "max-w-[80%] px-4 py-2 rounded-2xl",
+                "max-w-[80%] px-5 py-3 rounded-2xl shadow-sm",
                 message.sender === "user" 
-                  ? "bg-blue-600 text-white rounded-br-md" 
-                  : "bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 rounded-bl-md"
+                  ? "bg-[#007A7A] text-white rounded-br-md" 
+                  : "bg-white text-[#1c4064] rounded-bl-md border border-[#007A7A]/10"
               )}>
-                <p className="text-sm">{message.content}</p>
+                <p className="text-xl">{message.content}</p>
                 <p className={cn(
-                  "text-xs mt-1",
+                  "text-sm mt-1",
                   message.sender === "user" 
-                    ? "text-blue-100" 
-                    : "text-gray-500 dark:text-gray-400"
+                    ? "text-white/70" 
+                    : "text-[#1c4064]/60"
                 )}>
                   {formatTime(message.timestamp)}
                 </p>
@@ -192,11 +192,11 @@ export const ChatInterface = ({
             animate={{ opacity: 1, y: 0 }}
             className="flex justify-start"
           >
-            <div className="bg-gray-100 dark:bg-neutral-800 rounded-2xl rounded-bl-md px-4 py-2">
+            <div className="bg-white rounded-2xl rounded-bl-md px-5 py-3 shadow-sm border border-[#007A7A]/10">
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                <div className="w-2 h-2 bg-[#007A7A] rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                <div className="w-2 h-2 bg-[#007A7A] rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                <div className="w-2 h-2 bg-[#007A7A] rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
               </div>
             </div>
           </motion.div>
@@ -206,7 +206,7 @@ export const ChatInterface = ({
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 dark:border-neutral-700">
+      <form onSubmit={handleSubmit} className="p-4 bg-[#F5F5F5]">
         <div className="flex gap-2">
           <input
             ref={inputRef}
@@ -216,12 +216,12 @@ export const ChatInterface = ({
             onKeyPress={handleKeyPress}
             placeholder="Ask me anything about MAT San Jose..."
             disabled={isLoading}
-            className="flex-1 px-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:text-white disabled:opacity-50"
+                            className="flex-1 px-5 py-3 border border-[#007A7A]/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#007A7A] bg-white text-[#1c4064] disabled:opacity-50 shadow-sm text-xl"
           />
           <button
             type="submit"
             disabled={!inputValue.trim() || isLoading}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-full transition-colors"
+                          className="px-6 py-3 bg-[#007A7A] hover:bg-[#1c4064] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-2xl transition-colors"
           >
             {isLoading ? (
               <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,3 +37,46 @@ body {
 .footer-gradient {
   background: linear-gradient(135deg, #007A7A 10%, #1c4064 90%);
 }
+
+/* Blog content styling */
+.blog-content h2 {
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  color: #1c4064 !important;
+  margin-top: 3rem !important;
+  margin-bottom: 1.5rem !important;
+  line-height: 1.2 !important;
+}
+
+.blog-content h3 {
+  font-size: 1.875rem !important;
+  font-weight: 700 !important;
+  color: #1c4064 !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+  line-height: 1.3 !important;
+}
+
+.blog-content p {
+  font-size: 18px !important;
+  line-height: 1.8 !important;
+  color: rgba(28, 64, 100, 0.9) !important;
+  margin-bottom: 1.5rem !important;
+  font-weight: 400 !important;
+}
+
+.blog-content ul {
+  margin-bottom: 1.5rem !important;
+}
+
+.blog-content li {
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+  margin-bottom: 0.5rem !important;
+  color: rgba(28, 64, 100, 0.9) !important;
+}
+
+.blog-content strong {
+  font-weight: 600 !important;
+  color: #1c4064 !important;
+}

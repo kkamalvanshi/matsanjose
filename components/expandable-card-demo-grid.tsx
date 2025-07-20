@@ -88,7 +88,7 @@ export default function ExpandableCardDemo() {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px] max-h-[80vh] flex flex-col bg-white border border-[#F5F7FA] sm:rounded-3xl overflow-hidden mx-4"
+              className="w-full max-w-[500px] max-h-[80vh] flex flex-col bg-white border border-[#F5F7FA] sm:rounded-2xl overflow-hidden mx-4"
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
@@ -96,7 +96,7 @@ export default function ExpandableCardDemo() {
                   height={200}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-60 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
+                  className="w-full h-60 sm:rounded-tr-2xl sm:rounded-tl-2xl object-cover object-top"
                 />
               </motion.div>
 
@@ -123,7 +123,7 @@ export default function ExpandableCardDemo() {
                   <a
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-6 py-4 text-base md:text-lg rounded-full font-bold bg-[#FF9500] text-white hover:bg-[#FF9500]/90"
+                    className="px-4 h-10 rounded-2xl text-base font-bold relative cursor-pointer transition duration-200 inline-flex items-center justify-center text-center leading-none bg-[#FF9500] hover:bg-[#FF9500]/90 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset] hover:scale-105 transition-transform"
                   >
                     Schedule
                   </a>
@@ -161,11 +161,11 @@ export default function ExpandableCardDemo() {
         {cards.map((card, index) => (
           <li key={card.title} className={`${index === 0 || index === 1 ? '' : '-translate-y-24'} ${index % 2 === 1 ? '-ml-8' : ''}`}>
             <CardContainer className="inter-var">
-              <CardBody className="bg-gray-50 relative group/card border border-[#F5F7FA] hover:border-[#007A7A] w-auto sm:w-[30rem] h-auto rounded-xl p-4">
+              <CardBody className="bg-gray-50 relative group/card border border-[#F5F7FA] hover:border-[#007A7A] w-auto sm:w-[30rem] h-auto rounded-2xl p-4">
                 <motion.div
                   layoutId={`card-${card.title}-${id}`}
                   onClick={() => setActive(card)}
-                  className="flex flex-col hover:bg-[#F5F7FA] rounded-xl cursor-pointer"
+                  className="flex flex-col hover:bg-[#F5F7FA] rounded-2xl cursor-pointer"
                 >
                   <div className="flex gap-4 flex-col w-full">
                     <CardItem translateZ="200" className="w-full mt-4">
@@ -175,7 +175,7 @@ export default function ExpandableCardDemo() {
                           height={100}
                           src={card.src}
                           alt={card.title}
-                          className="h-60 w-full rounded-lg object-cover object-top group-hover/card:shadow-xl"
+                          className="h-60 w-full rounded-2xl object-cover object-top group-hover/card:shadow-xl"
                         />
                       </motion.div>
                     </CardItem>
@@ -206,7 +206,7 @@ export default function ExpandableCardDemo() {
                   </div>
                   
                   <div className="flex justify-center items-center mt-4 w-full">
-                    <div className="px-6 py-2 bg-[#007A7A] text-white text-sm font-medium rounded-full">
+                    <div className="px-6 py-2 bg-[#007A7A] text-white text-sm font-medium rounded-2xl">
                       Learn More
                     </div>
                   </div>
@@ -320,7 +320,7 @@ const cards = [
             width="100%" 
             height="200" 
             controls 
-            className="rounded-lg"
+            className="rounded-2xl"
           >
             <source src="/SparkGapAcousticWaves_prog03.mp4" type="video/mp4" />
             Your browser does not support the video tag.

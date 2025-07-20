@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, memo, useRef } from "react";
+import React, { useState, useCallback, memo, useRef, useEffect } from "react";
 import {
   Navbar,
   NavBody,
@@ -21,33 +21,67 @@ import { AnimatedTestimonials } from "../components/ui/animated-testimonials";
 import StickyFooter from "../components/ui/sticky-footer";
 import ImageTrail, { ImageTrailItem } from "../components/ui/image-trail";
 import TextCursorProximity from "../components/ui/text-cursor-proximity";
+import NumberTicker, { NumberTickerRef } from "../components/ui/basic-number-ticker";
+import { GlowingEffect } from "../components/ui/glowing-effect";
 
-// Memoize the nav items to prevent unnecessary re-renders
-const navItems = [
-  { name: "Home", link: "#home" },
-  { name: "About", link: "#about" },
-  { name: "Services", link: "#services" },
-  { name: "FAQs", link: "/faqs" },
-  { name: "Contact", link: "#contact" },
-];
+import { navItems } from "../lib/navigation";
 
 // Memoized content component
 const PageContent = memo(() => {
-  const imageTrailContainerRef = useRef<HTMLDivElement>(null);
+  const imageTrailContainerRef = useRef<HTMLDivElement>(null!);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [hasTriggeredStats, setHasTriggeredStats] = useState(false);
+  
+  // Refs for number tickers
+  const ticker1Ref = useRef<NumberTickerRef>(null);
+  const ticker2Ref = useRef<NumberTickerRef>(null);
+  const ticker3Ref = useRef<NumberTickerRef>(null);
+  const ticker4Ref = useRef<NumberTickerRef>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasTriggeredStats) {
+            setHasTriggeredStats(true);
+            // Trigger all number ticker animations with slight delays
+            setTimeout(() => ticker1Ref.current?.startAnimation(), 100);
+            setTimeout(() => ticker2Ref.current?.startAnimation(), 200);
+            setTimeout(() => ticker3Ref.current?.startAnimation(), 300);
+            setTimeout(() => ticker4Ref.current?.startAnimation(), 400);
+          }
+        });
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the section is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger a bit before the section is fully visible
+      }
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => {
+      if (statsRef.current) {
+        observer.unobserve(statsRef.current);
+      }
+    };
+  }, [hasTriggeredStats]);
   
   return (
   <>
     <WavyBackground
       backgroundFill="#F5F5F5"
       colors={["#007A7A", "#4CAF50"]}
-      waveWidth={50}
+      waveWidth={60}
       blur={12}
       speed="fast"
       waveOpacity={0.3}
-      className="flex items-center justify-center px-4 md:px-10 py-12 w-full min-h-screen"
+      className="flex items-center justify-center px-4 md:px-10 w-full min-h-screen"
       containerClassName="min-h-screen w-full"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-18 lg:gap-16 w-full max-w-7xl mx-auto items-center -mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-18 lg:gap-16 w-full max-w-7xl mx-auto items-center mt-16">
         {/* Left Side - Text Content */}
         <div className="text-left lg:text-left order-2 lg:order-1">
           <div className="space-y-2">
@@ -73,14 +107,14 @@ const PageContent = memo(() => {
         {/* Right Side - 3D Card */}
         <div className="flex justify-center order-1 lg:order-2">
           <CardContainer className="inter-var">
-            <CardBody className="bg-white relative group/card hover:shadow-2xl border border-[#F5F7FA] hover:border-[#007A7A] w-auto sm:w-[22rem] h-auto rounded-xl p-6 transition-all duration-300">
+            <CardBody className="bg-white relative group/card hover:shadow-2xl border border-[#F5F7FA] hover:border-[#007A7A] w-auto sm:w-[22rem] h-auto rounded-2xl p-6 transition-all duration-300">
               
               <CardItem translateZ="200" className="w-full flex justify-center">
                 <img
                   src="/scottHeadshot.png"
                   height="750"
                   width="750"
-                  className="h-80 w-80 object-cover rounded-xl group-hover/card:shadow-xl"
+                  className="h-80 w-80 object-cover rounded-2xl group-hover/card:shadow-xl"
                   alt="Scott Lamb - MAT Specialist"
                 />
               </CardItem>
@@ -117,9 +151,148 @@ const PageContent = memo(() => {
       </div>
     </WavyBackground>
 
+    {/* Statistics Section */}
+    <div ref={statsRef} className="bg-[#F5F5F5] py-24 -mt-16 relative z-10">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-[#1c4064]">
+            Proven Results
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-[#1c4064] max-w-2xl mx-auto">
+            Real data from our MAT therapy practice showing measurable outcomes for our clients
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Stat 1 */}
+          <div className="relative text-center p-6 bg-white rounded-2xl shadow-lg border border-[#007A7A]/10 hover:shadow-xl transition-shadow duration-300">
+            <GlowingEffect 
+              disabled={false}
+              proximity={150}
+              blur={8}
+              spread={90}
+              borderWidth={3}
+              movementDuration={1.2}
+              glow={true}
+            />
+            <div className="text-4xl md:text-5xl font-bold text-[#007A7A] mb-2 flex items-center justify-center">
+              <NumberTicker
+                ref={ticker1Ref}
+                from={0}
+                target={67}
+                transition={{
+                  duration: 2,
+                  type: "tween",
+                  ease: "easeOut",
+                }}
+                autoStart={false}
+                className="text-4xl md:text-5xl font-bold text-[#007A7A]"
+              />
+              <span className="text-4xl md:text-5xl font-bold text-[#007A7A]">%</span>
+            </div>
+            <p className="text-[#1c4064] text-sm md:text-base font-medium">
+              Muscles activated on the first attempt
+            </p>
+          </div>
+
+          {/* Stat 2 */}
+          <div className="relative text-center p-6 bg-white rounded-2xl shadow-lg border border-[#007A7A]/10 hover:shadow-xl transition-shadow duration-300">
+            <GlowingEffect 
+              disabled={false}
+              proximity={150}
+              blur={8}
+              spread={90}
+              borderWidth={3}
+              movementDuration={1.2}
+              glow={true}
+            />
+            <div className="text-4xl md:text-5xl font-bold text-[#007A7A] mb-2 flex items-center justify-center">
+              <NumberTicker
+                ref={ticker2Ref}
+                from={0}
+                target={92}
+                transition={{
+                  duration: 2.2,
+                  type: "tween",
+                  ease: "easeOut",
+                }}
+                autoStart={false}
+                className="text-4xl md:text-5xl font-bold text-[#007A7A]"
+              />
+              <span className="text-4xl md:text-5xl font-bold text-[#007A7A]">%</span>
+            </div>
+            <p className="text-[#1c4064] text-sm md:text-base font-medium">
+              Clients report relief within 3 sessions
+            </p>
+          </div>
+
+          {/* Stat 3 */}
+          <div className="relative text-center p-6 bg-white rounded-2xl shadow-lg border border-[#007A7A]/10 hover:shadow-xl transition-shadow duration-300">
+            <GlowingEffect 
+              disabled={false}
+              proximity={150}
+              blur={8}
+              spread={90}
+              borderWidth={3}
+              movementDuration={1.2}
+              glow={true}
+            />
+            <div className="text-4xl md:text-5xl font-bold text-[#007A7A] mb-2 flex items-center justify-center">
+              <NumberTicker
+                ref={ticker3Ref}
+                from={0}
+                target={50}
+                transition={{
+                  duration: 1.8,
+                  type: "tween",
+                  ease: "easeOut",
+                }}
+                autoStart={false}
+                className="text-4xl md:text-5xl font-bold text-[#007A7A]"
+              />
+              <span className="text-4xl md:text-5xl font-bold text-[#007A7A]">%</span>
+            </div>
+            <p className="text-[#1c4064] text-sm md:text-base font-medium">
+              Reduction in chronic pain symptoms
+            </p>
+          </div>
+
+          {/* Stat 4 */}
+          <div className="relative text-center p-6 bg-white rounded-2xl shadow-lg border border-[#007A7A]/10 hover:shadow-xl transition-shadow duration-300">
+            <GlowingEffect 
+              disabled={false}
+              proximity={150}
+              blur={8}
+              spread={90}
+              borderWidth={3}
+              movementDuration={1.2}
+              glow={true}
+            />
+            <div className="text-4xl md:text-5xl font-bold text-[#007A7A] mb-2">
+              <NumberTicker
+                ref={ticker4Ref}
+                from={5}
+                target={0}
+                transition={{
+                  duration: 2,
+                  type: "tween",
+                  ease: "easeOut",
+                }}
+                autoStart={false}
+                className="text-4xl md:text-5xl font-bold text-[#007A7A]"
+              />
+            </div>
+            <p className="text-[#1c4064] text-sm md:text-base font-medium">
+              Medications or surgeries required
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     {/* Expandable Card Demo Standard Section */}
-    <div className="bg-[#F5F5F5] py-0 -mt-32 relative z-10">
-      <div className="text-center mb-2 pt-8 px-4">
+    <div className="bg-[#F5F5F5] py-8 relative z-10">
+      <div className="text-center mb-2 pt-4 px-4">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 text-[#1c4064]">
           Our Most Popular Services
         </h2>
@@ -155,7 +328,7 @@ const PageContent = memo(() => {
                 autoplayDuration={4000}
               />
               <div className="text-center mt-4">
-                <div className="inline-flex items-center gap-2 bg-white border border-[#007A7A] backdrop-blur-sm px-6 py-3 rounded-full">
+                <div className="inline-flex items-center gap-2 bg-white border border-[#007A7A] backdrop-blur-sm px-6 py-3 rounded-2xl">
                   <div className="w-2 h-2 bg-[#007A7A] rounded-full animate-pulse"></div>
                   <span className="text-[#1c4064] text-sm font-medium">Hover over images to see transformation results</span>
                 </div>
@@ -166,7 +339,7 @@ const PageContent = memo(() => {
                 <h3 className="text-xl md:text-5xl font-bold text-[#1c4064] inline">Kevin M.</h3>
               </div>
               <div className="mb-4">
-                <span className="inline-block bg-[#007A7A] text-white px-3 py-1 rounded-full text-base font-medium mb-2">
+                <span className="inline-block bg-[#007A7A] text-white px-3 py-1 rounded-2xl text-base font-medium mb-2">
                   Forward Head Posture
                 </span>
               </div>
@@ -182,7 +355,7 @@ const PageContent = memo(() => {
     </div>
 
     {/* Animated Testimonials Section */}
-    <div className="bg-[#F5F5F5] py-8">
+    <div className="bg-[#F5F5F5] py-30">
       <div className="text-center mb-8 px-4">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-[#1c4064]">
           What Our Clients Say
@@ -269,28 +442,83 @@ const PageContent = memo(() => {
             className="relative min-w-[300px] max-w-[350px] sm:min-w-[300px] h-[325px] sm:h-[350px] w-full overflow-hidden flex flex-col justify-between items-center shadow-2xl p-4 sm:p-5 bg-gradient-to-br from-[#007A7A] to-[#1c4064] text-white select-none"
           >
           <div className="flex flex-col justify-start items-start uppercase space-y-2 pt-4 pl-4">
-            <div className="text-xl sm:text-3xl lg:text-5xl font-bold text-[#F5F5F5] text-left">
+            <TextCursorProximity
+              className="text-xl sm:text-3xl lg:text-5xl font-bold text-[#F5F5F5] will-change-transform text-left"
+              styles={{
+                filter: {
+                  from: "blur(0px)",
+                  to: "blur(8px)",
+                }
+              }}
+              falloff="gaussian"
+              radius={120}
+              containerRef={imageTrailContainerRef}
+            >
               FOLLOW
-            </div>
-            <div className="text-lg sm:text-2xl lg:text-4xl font-bold text-[#F5F5F5] text-left">
+            </TextCursorProximity>
+            <TextCursorProximity
+              className="text-lg sm:text-2xl lg:text-4xl font-bold text-[#F5F5F5] will-change-transform text-left"
+              styles={{
+                filter: {
+                  from: "blur(0px)",
+                  to: "blur(6px)",
+                }
+              }}
+              falloff="gaussian"
+              radius={120}
+              containerRef={imageTrailContainerRef}
+            >
               @matsanjose
-            </div>
+            </TextCursorProximity>
           </div>
 
           <div className="flex flex-col w-full leading-tight space-y-1 mt-auto">
             <div className="flex justify-end w-full">
               <div className="flex flex-col space-y-1 text-right">
-                <div className="text-xs font-medium text-[#F5F5F5]">
+                <TextCursorProximity
+                  className="text-xs font-medium text-[#F5F5F5] will-change-transform"
+                  styles={{
+                    filter: {
+                      from: "blur(0px)",
+                      to: "blur(3px)",
+                    }
+                  }}
+                  falloff="exponential"
+                  radius={100}
+                  containerRef={imageTrailContainerRef}
+                >
                   DAILY WELLNESS TIPS & CLIENT WINS ⟡
-                </div>
+                </TextCursorProximity>
 
-                <div className="text-xs font-medium text-[#F5F5F5]">
+                <TextCursorProximity
+                  className="text-xs font-medium text-[#F5F5F5] will-change-transform"
+                  styles={{
+                    filter: {
+                      from: "blur(0px)",
+                      to: "blur(3px)",
+                    }
+                  }}
+                  falloff="exponential"
+                  radius={100}
+                  containerRef={imageTrailContainerRef}
+                >
                   ⟨⟩ BEHIND THE SCENES & EXPERT ADVICE
-                </div>
+                </TextCursorProximity>
 
-                <div className="text-xs font-medium text-[#F5F5F5]">
+                <TextCursorProximity
+                  className="text-xs font-medium text-[#F5F5F5] will-change-transform"
+                  styles={{
+                    filter: {
+                      from: "blur(0px)",
+                      to: "blur(3px)",
+                    }
+                  }}
+                  falloff="exponential"
+                  radius={100}
+                  containerRef={imageTrailContainerRef}
+                >
                   JOIN OUR HEALING COMMUNITY ♡
-                </div>
+                </TextCursorProximity>
               </div>
             </div>
           </div>
@@ -322,7 +550,7 @@ export default function Home() {
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
-          <NavbarButton variant="gradient" className="bg-[#FF9500] hover:bg-[#FF9500]/90 text-white">Get Started</NavbarButton>
+          <NavbarButton variant="gradient" className="bg-[#FF9500] hover:bg-[#FF9500]/90 text-white hover:scale-105 transition-transform duration-200">Schedule</NavbarButton>
         </NavBody>
         <MobileNav>
           <MobileNavHeader>
@@ -346,14 +574,18 @@ export default function Home() {
                 {item.name}
               </a>
             ))}
-            <NavbarButton variant="gradient" className="w-full bg-[#FF9500] hover:bg-[#FF9500]/90 text-white">
+            <NavbarButton variant="gradient" className="w-full bg-[#FF9500] hover:bg-[#FF9500]/90 text-white hover:scale-105 transition-transform duration-200">
               Get Started
             </NavbarButton>
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
 
-      <PageContent />
+      <main className="relative z-10 pb-0 bg-[#F5F5F5] min-h-screen">
+        <div className="relative z-0 bg-[#F5F5F5] min-h-screen -mt-20">
+          <PageContent />
+        </div>
+      </main>
       <StickyFooter />
     </>
   );

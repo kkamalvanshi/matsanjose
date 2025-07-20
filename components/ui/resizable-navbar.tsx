@@ -108,11 +108,19 @@ export const NavBody = ({ children, visible }: { children: React.ReactNode; visi
         willChange: "transform, backdrop-filter, box-shadow",
       }}
       className={cn(
-        "relative z-[9999] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
+        "relative z-[9999] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-xl bg-transparent px-8 py-2 lg:flex gap-4",
         visible && "bg-white/70",
       )}
     >
-      {children}
+      <div className="flex-1 flex justify-start">
+        {React.Children.toArray(children)[0]}
+      </div>
+      <div className="flex-1 flex justify-center px-4">
+        {React.Children.toArray(children)[1]}
+      </div>
+      <div className="flex-1 flex justify-end">
+        {React.Children.toArray(children)[2]}
+      </div>
     </motion.div>
   );
 };
@@ -152,7 +160,7 @@ export const NavItems = ({ items }: { items: { name: string; link: string }[] })
         <a
           key={`link-${idx}`}
           href={item.link}
-          className="relative text-[#1c4064] hover:text-[#007A7A] px-3 py-2 rounded-full text-sm lg:text-base font-medium transition-all duration-300 whitespace-nowrap hover:shadow-sm hover:-translate-y-0.5 z-[9999]"
+          className="relative text-[#1c4064] hover:text-[#007A7A] px-3 py-2 rounded-2xl text-base lg:text-lg font-medium transition-all duration-300 whitespace-nowrap hover:shadow-sm z-[9999]"
           onMouseEnter={(e) => handleMouseEnter(idx, e)}
           onMouseLeave={handleMouseLeave}
         >
@@ -165,7 +173,7 @@ export const NavItems = ({ items }: { items: { name: string; link: string }[] })
         {hoveredIndex !== null && hoveredRect && (
           <motion.div
             layoutId="navbar-indicator"
-            className="absolute bg-[#007A7A]/10 border border-[#007A7A] rounded-full"
+            className="absolute bg-[#007A7A]/10 border border-[#007A7A] rounded-2xl"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
               opacity: 1,
@@ -286,7 +294,7 @@ export const NavbarLogo = ({ className }: { className?: string }) => {
     <Link
       href="/"
       className={cn(
-        "font-bold text-lg md:text-xl lg:text-2xl text-[#1c4064] hover:opacity-80 transition-opacity whitespace-nowrap",
+        "font-bold text-xl md:text-2xl lg:text-3xl text-[#1c4064] hover:opacity-80 transition-opacity whitespace-nowrap",
         className
       )}
     >
@@ -313,7 +321,7 @@ export const NavbarButton = ({
   | React.ComponentPropsWithoutRef<"button">
 )) => {
   const baseStyles =
-    "px-4 h-10 rounded-md text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-flex items-center justify-center text-center leading-none";
+    "px-4 h-10 rounded-2xl text-base font-bold relative cursor-pointer transition duration-200 inline-flex items-center justify-center text-center leading-none";
 
   const variantStyles = {
     primary:
