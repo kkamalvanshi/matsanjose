@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -11,11 +11,6 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   
   const correctPassword = "aiisthefuture";
-  
-  // Debug: log the correct password on component mount
-  useEffect(() => {
-    console.log("Login component mounted. Correct password is:", correctPassword);
-  }, []);
   const redirectPath = searchParams.get('redirect') || '/';
 
   useEffect(() => {
@@ -34,37 +29,23 @@ export default function LoginPage() {
     setIsLoading(true);
     setError("");
 
-    // Debug logging
-    console.log("Entered password:", password);
-    console.log("Expected password:", correctPassword);
-    console.log("Passwords match:", password === correctPassword);
-    console.log("Password length entered:", password.length);
-    console.log("Expected password length:", correctPassword.length);
-
     // Simulate a brief loading state for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Trim whitespace and compare (case insensitive for debugging)
-    const trimmedPassword = password.trim().toLowerCase();
-    const expectedPassword = correctPassword.toLowerCase();
+    // Trim whitespace and compare (case sensitive)
+    const trimmedPassword = password.trim();
     
-    console.log("Trimmed password:", trimmedPassword);
-    console.log("Expected password (lowercase):", expectedPassword);
-    
-    if (trimmedPassword === expectedPassword) {
+    if (trimmedPassword === correctPassword) {
       // Set authentication cookie (expires in 24 hours)
       const expirationDate = new Date();
       expirationDate.setTime(expirationDate.getTime() + (24 * 60 * 60 * 1000));
       
       document.cookie = `mat-auth=authenticated; expires=${expirationDate.toUTCString()}; path=/; SameSite=Strict`;
       
-      console.log("Authentication successful, redirecting to:", redirectPath);
-      
       // Redirect to the original destination or home page
       router.push(redirectPath);
     } else {
-      console.log("Password mismatch");
-      setError(`Incorrect password. Please try again. (Expected: ${correctPassword})`);
+      setError("Incorrect password. Please try again.");
       setPassword("");
     }
     
@@ -145,5 +126,22 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-[#007A7A] to-[#1c4064] flex items-center justify-center px-4">
+        <div className="max-w-md w-full">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-2">MAT San Jose</h1>
+            <p className="text-white/80 text-lg">Loading...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 } 

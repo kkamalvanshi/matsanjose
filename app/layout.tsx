@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "San Jose's premier muscle activation therapy practice. Expert MAT specialist providing pain relief, posture correction, and sports rehabilitation without surgery or medication.",
   keywords: "muscle activation technique, MAT therapy, pain relief, San Jose, posture correction, sports rehabilitation, chronic pain treatment",
   authors: [{ name: "MAT San Jose" }],
-  viewport: "width=device-width, initial-scale=1",
+
   robots: "index, follow",
   icons: {
     icon: [
@@ -32,6 +32,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
